@@ -1,0 +1,6 @@
+.simplebar-scrollbar::before {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  width: 8px;
+  transform: translateX(-4px);
+}

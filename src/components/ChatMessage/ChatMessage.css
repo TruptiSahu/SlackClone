@@ -1,0 +1,54 @@
+.userAvatar {
+  height: 36px;
+  width: 36px;
+  flex-shrink: 0;
+  cursor: pointer;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-right: 8px;
+}
+
+.userAvatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.messageContent .user__name-container {
+  line-height: 1;
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
+  font-family: 'Slack-Lato', sans-serif;
+}
+
+.messageContent .user__name,
+.messageContent .user__messageTime {
+  cursor: pointer;
+}
+
+.messageContent .user__name {
+  font-weight: 900;
+  font-size: 15px;
+  color: rgb(29, 28, 29);
+  margin-right: 9.3px;
+}
+
+.messageContent .user__messageTime {
+  color: rgba(97, 96, 97, 1);
+  font-size: 12px;
+}
+
+.messageContent .user__name:hover,
+.messageContent .user__messageTime:hover {
+  text-decoration: underline;
+}
+
+.user__message {
+  font-family: 'Slack-Lato', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: rgb(29, 28, 29);
+  text-align: left;
+  margin-top: 2px;
+}

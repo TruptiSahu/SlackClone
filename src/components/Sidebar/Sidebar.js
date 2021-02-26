@@ -2,10 +2,48 @@ import React from 'react';
 import styled from 'styled-components';
 import './Sidebar.css';
 import { penIcon } from './IconPen';
-import { sidebarItemsData } from './SidebarData';
-import { channelNameList } from './ChannelListData';
+import { sidebarItemsData } from '../../data/SidebarData';
+import SimpleBar from 'simplebar-react';
+import 'simplebar/dist/simplebar.min.css';
+import './CustomScrollbar.css';
+import db from '../../firebase';
 
-function Sidebar() {
+function Sidebar(props) {
+  const addNewChannel = () => {
+    const promptName = prompt('Enter channel name');
+    if (promptName) {
+      db.collection('rooms').add({
+        name: promptName,
+      });
+    }
+  };
+
+  const expandChannelHandler = function () {
+    document.querySelector('.channel__btn--expand').classList.toggle('expand');
+
+    document.querySelector('.channelList').classList.toggle('display-none');
+  };
+
+  const channelClickHandler = function (e) {
+    const clickChannel = e.target.closest('li');
+    if (!clickChannel) return;
+
+    document
+      .querySelector('.channelList')
+      .querySelectorAll('li')
+      .forEach((channel) => {
+        channel.classList.remove('clickedChannel');
+      });
+    document
+      .querySelector('.mainChannels')
+      .querySelectorAll('li')
+      .forEach((channel) => {
+        channel.classList.remove('clickedChannel');
+      });
+
+    clickChannel.classList.add('clickedChannel');
+  };
+
   return (
     <Container>
       <div className="workspaceContainer">
@@ -16,52 +54,74 @@ function Sidebar() {
         <button className="workspace__btn--new-message">{penIcon.icon}</button>
       </div>
 
-      <MainChannels>
-        {sidebarItemsData.map((item, i) => {
-          let fontSize = '18px';
-          if (i === 2 || i === 4) {
-            fontSize = '16px';
-          }
-          return (
-            <MainChannelItem>
-              <span
-                className="icon"
-                style={{ fontSize: fontSize }}
-                data-icon={item.icon}
-              ></span>
-              <p className="name">{item.text}</p>
-            </MainChannelItem>
-          );
-        })}
-      </MainChannels>
+      <ChannelsWrapper>
+        <SimpleBar
+          style={{
+            maxHeight: '100%',
+          }}
+        >
+          <MainChannels className="mainChannels">
+            {sidebarItemsData.map((item, i) => {
+              let fontSize = '18px';
+              if (i === 2 || i === 4) {
+                fontSize = '16px';
+              }
+              return (
+                <MainChannelItem
+                  onClick={channelClickHandler}
+                  key={`${item}-${i}`}
+                >
+                  <span
+                    className="icon"
+                    style={{ fontSize: fontSize }}
+                    data-icon={item.icon}
+                  ></span>
+                  <p className="name">{item.text}</p>
+                </MainChannelItem>
+              );
+            })}
+          </MainChannels>
+          <ChannelsContainer>
+            <div className="newChannelContainer">
+              <button
+                className="channel__btn channel__btn--expand"
+                id="btn-expand"
+                onClick={expandChannelHandler}
+              >
+                <span className="icon icon-down"></span>
+              </button>
+              <div className="channel-title">Channels</div>
+              <button
+                className="channel__btn channel__btn--addChannel"
+                onClick={addNewChannel}
+              >
+                <span className="icon icon-add"></span>
+              </button>
+            </div>
 
-      <ChannelsContainer>
-        <div className="newChannelContainer">
-          <button className="channel__btn channel__btn--expand" id="btn-expand">
-            <span className="icon icon-down"></span>
-          </button>
-          <div className="channel-title">Channels</div>
-          <button className="channel__btn channel__btn--addChannel">
-            <span className="icon icon-add"></span>
-          </button>
-        </div>
+            <ChannelsList className="channelList">
+              {props.rooms
+                .sort((a, b) => {
+                  if (a.name >= b.name) return 1;
+                  else return -1;
+                })
+                .map((item, i, arr) => {
+                  return (
+                    <Channel key={item.id} onClick={channelClickHandler}>
+                      <span className="icon" data-icon={'\uE125'}></span>
+                      <p className="name">{item.name}</p>
+                    </Channel>
+                  );
+                })}
 
-        <ChannelsList className="channelList">
-          {channelNameList.map((item) => {
-            return (
-              <Channel>
-                <span className="icon" data-icon={'\uE125'}></span>
-                <p className="name">{item}</p>
-              </Channel>
-            );
-          })}
-
-          <AddChannel>
-            <span className="icon" data-icon={'\uE281'}></span>
-            <p className="name">Add channels</p>
-          </AddChannel>
-        </ChannelsList>
-      </ChannelsContainer>
+              <AddChannel onClick={addNewChannel}>
+                <span className="icon" data-icon={'\uE281'}></span>
+                <p className="name">Add channels</p>
+              </AddChannel>
+            </ChannelsList>
+          </ChannelsContainer>
+        </SimpleBar>
+      </ChannelsWrapper>
     </Container>
   );
 }
@@ -71,6 +131,10 @@ export default Sidebar;
 const Container = styled.div({
   background: '#3f0e40',
 });
+
+const ChannelsWrapper = styled.div`
+  height: calc(100vh - 102px);
+`;
 
 const MainChannels = styled.ul({
   margin: '12px 0',
@@ -104,6 +168,7 @@ const MainChannelItem = styled.li`
     font-size: 18px;
     width: 26px;
     height: 20px;
+    flex-shrink: 0;
   }
 
   > .icon::before {
@@ -131,7 +196,9 @@ const MainChannelItem = styled.li`
   }
 `;
 
-const ChannelsContainer = styled.div``;
+const ChannelsContainer = styled.div`
+  padding-bottom: 20px;
+`;
 
 const ChannelsList = styled.div``;
 
@@ -164,6 +231,7 @@ const Channel = styled.li`
     height: 20px;
     margin-left: 8px;
     font-size: 20px;
+    flex-shrink: 0;
   }
 
   > .icon::before {

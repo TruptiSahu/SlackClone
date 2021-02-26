@@ -152,6 +152,8 @@
   align-items: center;
   justify-content: center;
   position: relative;
+  background: url(../../assets/images/my-img.jpg) no-repeat center center /
+    cover;
 }
 
 .userImage:hover::after {
@@ -163,10 +165,4 @@
   right: 0;
   bottom: 0;
   background: rgba(255, 255, 255, 0.13);
-}
-
-.userImage img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }

@@ -117,10 +117,19 @@
   opacity: 0.64;
   position: relative;
   cursor: pointer;
+  transition: all 0.1s;
 }
 
-.channel__btn .icon.icon-down {
+.channel__btn--expand .icon.icon-down {
   transform: translateX(-0.5px) rotate(90deg);
+}
+
+.channel__btn--expand.expand .icon.icon-down {
+  transform: translateX(-0.5px) rotate(00deg);
+}
+
+.display-none {
+  display: none;
 }
 
 .channel__btn .icon-down:before {
@@ -148,10 +157,18 @@
   overflow: hidden;
   flex: 1 1 0;
   padding-right: 8px;
-
   color: rgb(188, 171, 188);
   cursor: pointer;
   font-size: 15px;
   font-family: 'Slack-Lato', sans-serif;
   font-weight: 400;
+}
+
+.clickedChannel {
+  transition: all 0.2s;
+  background: rgb(17, 100, 163);
+}
+
+.clickedChannel > * {
+  color: #fff !important;
 }

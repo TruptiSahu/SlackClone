@@ -15,7 +15,7 @@ function Header() {
         <input
           type="text"
           placeholder="Search Clever Programmer"
-          class="header__search"
+          className="header__search"
         />
       </div>
       <div className="header__btn-container">
@@ -26,7 +26,7 @@ function Header() {
       <div className="header__right">
         <button className="header__btn--user">
           <div className="userImage">
-            <img src="https://cutt.ly/dlb7FUD" alt="" />
+            {/* <img src={require('./my-img.jpg')} alt="" /> */}
           </div>
         </button>
       </div>

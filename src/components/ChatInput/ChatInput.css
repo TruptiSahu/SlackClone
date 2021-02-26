@@ -1,0 +1,228 @@
+.inputWrapper {
+  position: relative;
+  display: flex;
+  height: 42px;
+  border: 1px solid rgba(29, 28, 29, 0.7);
+  margin-top: 4px;
+  border-radius: 4px;
+  transition: all 0.2s;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  overflow: hidden;
+}
+
+.inputWrapper.active {
+  height: 85px;
+}
+
+.inputContainer {
+  min-height: 40px;
+  flex: 1;
+  width: 100%;
+  padding-right: 180px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+.inputContainer input {
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  margin-left: 10px;
+  font-family: 'Slack-Lato', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  color: rgb(29, 28, 29);
+  min-height: 22px;
+  overflow: auto;
+}
+
+.inputContainer input::placeholder {
+  color: rgba(0, 0, 0, 0.411);
+}
+
+.buttonsContainer {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  height: 32px;
+  width: 170px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1;
+}
+
+.form__btn,
+.form__format-btn {
+  border-radius: 2px;
+  transition: all 0.2s;
+  height: 32px;
+  width: 32px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  border: none;
+  outline: none;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.form__btn:hover,
+.form__format-btn:hover {
+  background: rgba(29, 28, 29, 0.04);
+  color: rgba(29, 28, 29, 1);
+}
+
+.icon {
+  font-family: 'Slack v2';
+  display: flex;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.form__btn .icon,
+.form__format-btn .icon {
+  color: rgba(29, 28, 29, 0.7);
+}
+
+.icon-format::before {
+  content: '\E194';
+  transition: all 0.2s;
+}
+
+.icon-mention::before {
+  content: '\E009';
+}
+
+.icon-emoji::before {
+  content: '\E094';
+}
+
+.form__btn-emoji:hover .icon-emoji::before {
+  content: '\E119';
+  background: rgba(242, 199, 68, 1);
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.icon-attach::before {
+  content: '\E089';
+}
+
+.icon-send::before {
+  content: '\E543';
+}
+
+.form__btn:hover .icon::before,
+.form__format-btn:hover .icon::before {
+  color: rgba(29, 28, 29, 1);
+}
+
+.form__btn-send .icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form__btn.btn-disabled {
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.form__btn.btn-active,
+.form__format-btn.btn-active {
+  background-color: rgba(29, 28, 29, 0.13);
+}
+
+.form__btn.btn-active .icon::before,
+.form__format-btn.btn-active .icon::before {
+  color: rgba(29, 28, 29, 1);
+}
+
+.form__btn-send.btn-active {
+  background: #007a5a;
+}
+
+.form__btn-send.btn-active .icon::before {
+  color: #fff;
+}
+
+.form__format-btn .icon::before {
+  content: attr(data-icon);
+}
+
+.messageFormatBtns {
+  height: 41px;
+  width: 100%;
+  padding-right: 180px;
+  background: rgba(248, 248, 248, 1);
+  border-radius: 0px 0px 6px 6px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border-top: 1px solid rgba(0, 0, 0, 0.075);
+  transition: all 0.2s;
+  transform: translateY(100%);
+}
+
+.inputWrapper.active .inputContainer {
+  width: 100%;
+  padding-right: 0;
+}
+
+.inputWrapper.active .inputContainer {
+  padding-right: 15px;
+}
+
+.inputWrapper.active .messageFormatBtns {
+  transform: translateY(0);
+}
+
+.form__format-btn {
+  margin-left: 5px;
+}
+
+.inputContainer input.message-bold {
+  font-weight: 700;
+}
+
+.inputContainer input.message-italic {
+  font-style: italic;
+}
+
+.inputContainer input.message-underline {
+  text-decoration: underline;
+}
+
+.inputContainer input.message-uppercase {
+  text-transform: uppercase;
+}
+
+.inputContainer input.message-strick {
+  text-decoration: line-through;
+}
+
+.inputContainer input.message-code {
+  padding: 2px 3px 1px;
+  border: 1px solid rgba(29, 28, 29, 0.13);
+  border-radius: 3px;
+  background-color: rgba(29, 28, 29, 0.04);
+  color: #e01e5a;
+  font-size: 12px;
+}
+
+#input-message::placeholder {
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+  text-transform: none;
+}
