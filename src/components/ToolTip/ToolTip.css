@@ -1,0 +1,36 @@
+.tooltip {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-30%, 30%);
+  background: #000;
+  border-radius: 10px;
+  color: #fff;
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.1s ease;
+  z-index: 2;
+}
+
+.tooltip::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 15%;
+  background: none;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #000;
+  transform: translateY(3px);
+}
+
+.tooltip p {
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: 'Slack-Lato', sans-serif;
+  font-weight: 500;
+  padding: 8px 12px;
+}

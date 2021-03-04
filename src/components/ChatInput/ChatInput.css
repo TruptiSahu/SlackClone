@@ -29,6 +29,7 @@
 
 .inputContainer input {
   flex-grow: 1;
+  width: 100%;
   border: none;
   outline: none;
   margin-left: 10px;
@@ -40,6 +41,7 @@
   color: rgb(29, 28, 29);
   min-height: 22px;
   overflow: auto;
+  background: none;
 }
 
 .inputContainer input::placeholder {
@@ -148,6 +150,11 @@
   color: rgba(29, 28, 29, 1);
 }
 
+.dark-modeInput .messageFormatBtns {
+  border-top: 1px solid rgba(255, 255, 255, 0.13);
+  background: none;
+}
+
 .form__btn-send.btn-active {
   background: #007a5a;
 }
@@ -172,6 +179,11 @@
   border-top: 1px solid rgba(0, 0, 0, 0.075);
   transition: all 0.2s;
   transform: translateY(100%);
+}
+
+.dark-modeInput .messageFormatBtns {
+  border-top: 1px solid rgba(255, 255, 255, 0.13);
+  background: none;
 }
 
 .inputWrapper.active .inputContainer {
@@ -225,4 +237,45 @@
   font-style: normal;
   text-decoration: none;
   text-transform: none;
+}
+
+.dark-modeInput {
+  background-color: rgba(26, 29, 33);
+}
+
+.dark-modeInput .inputWrapper {
+  border: 1px solid rgba(232, 232, 232, 0.5);
+}
+
+.dark-modeInput .inputContainer input {
+  color: rgb(209, 210, 211);
+}
+
+.dark-modeInput .inputContainer input::placeholder {
+  color: rgba(209, 210, 211, 0.486);
+}
+
+.dark-modeInput .form__btn .icon,
+.dark-modeInput .form__format-btn .icon {
+  color: rgba(232, 232, 232, 0.7);
+}
+
+.dark-modeInput .form__btn:hover,
+.dark-modeInput .form__format-btn:hover {
+  background: rgba(232, 232, 232, 0.096);
+}
+
+.dark-modeInput .form__btn:hover .icon::before,
+.dark-modeInput .form__format-btn:hover .icon::before {
+  color: rgb(255, 255, 255);
+}
+
+.dark-modeInput .form__btn.btn-active,
+.dark-modeInput .form__format-btn.btn-active {
+  background: rgba(232, 232, 232, 0.096);
+}
+
+.form__btn.btn-active .icon::before,
+.dark-modeInput .form__format-btn.btn-active .icon::before {
+  color: rgba(255, 255, 255);
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import './Sidebar.css';
 import { penIcon } from './IconPen';
@@ -7,13 +7,31 @@ import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
 import './CustomScrollbar.css';
 import db from '../../firebase';
+import { useHistory } from 'react-router-dom';
+import Modal from '../Modal/Modal';
+import ToolTip from '../ToolTip/ToolTip';
 
 function Sidebar(props) {
-  const addNewChannel = () => {
-    const promptName = prompt('Enter channel name');
-    if (promptName) {
+  const history = useHistory();
+
+  const goToChannel = (id) => {
+    if (id === 'mainChannel') {
+      history.push(`/room/`);
+    } else if (id) {
+      history.push(`/room/${id}`);
+    }
+  };
+
+  const addChannelHandler = () => {
+    const modal = document.querySelector('.modal-container');
+    modal.classList.remove('display-none');
+  };
+
+  const addNewChannel = (channelName) => {
+    const name = channelName;
+    if (name) {
       db.collection('rooms').add({
-        name: promptName,
+        name: name,
       });
     }
   };
@@ -45,82 +63,89 @@ function Sidebar(props) {
   };
 
   return (
-    <Container>
+    <Container className={props.isDarkMode && 'dark-modeContainer'}>
+      <Modal addNewChannel={addNewChannel} />
       <div className="workspaceContainer">
         <div className="workspaceContainer__btn-container">
           <button className="workspace__btn">Clever Programmer</button>
           <span className="icon-down"></span>
         </div>
-        <button className="workspace__btn--new-message">{penIcon.icon}</button>
+        <button className="workspace__btn--new-message">
+          {penIcon.icon}
+          <ToolTip toolInfo="New Message" />
+        </button>
       </div>
-
       <ChannelsWrapper>
-        <SimpleBar
-          style={{
-            maxHeight: '100%',
-          }}
-        >
-          <MainChannels className="mainChannels">
-            {sidebarItemsData.map((item, i) => {
-              let fontSize = '18px';
-              if (i === 2 || i === 4) {
-                fontSize = '16px';
-              }
-              return (
-                <MainChannelItem
-                  onClick={channelClickHandler}
-                  key={`${item}-${i}`}
-                >
-                  <span
-                    className="icon"
-                    style={{ fontSize: fontSize }}
-                    data-icon={item.icon}
-                  ></span>
-                  <p className="name">{item.text}</p>
-                </MainChannelItem>
-              );
-            })}
-          </MainChannels>
-          <ChannelsContainer>
-            <div className="newChannelContainer">
-              <button
-                className="channel__btn channel__btn--expand"
-                id="btn-expand"
-                onClick={expandChannelHandler}
+        <MainChannels className="mainChannels">
+          {sidebarItemsData.map((item, i) => {
+            let fontSize = '18px';
+            if (i === 2 || i === 4) {
+              fontSize = '16px';
+            }
+            return (
+              <MainChannelItem
+                onClick={(e) => {
+                  channelClickHandler(e);
+                  goToChannel('mainChannel');
+                }}
+                key={`${item}-${i}`}
               >
-                <span className="icon icon-down"></span>
-              </button>
-              <div className="channel-title">Channels</div>
-              <button
-                className="channel__btn channel__btn--addChannel"
-                onClick={addNewChannel}
-              >
-                <span className="icon icon-add"></span>
-              </button>
-            </div>
+                <span
+                  className="icon"
+                  style={{ fontSize: fontSize }}
+                  data-icon={item.icon}
+                ></span>
+                <p className="name">{item.text}</p>
+              </MainChannelItem>
+            );
+          })}
+        </MainChannels>
+        <ChannelsContainer>
+          <div className="newChannelContainer">
+            <button
+              className="channel__btn channel__btn--expand"
+              id="btn-expand"
+              onClick={expandChannelHandler}
+            >
+              <span className="icon icon-down"></span>
+            </button>
+            <div className="channel-title">Channels</div>
+            <button
+              className="channel__btn channel__btn--addChannel"
+              onClick={addChannelHandler}
+            >
+              <span className="icon icon-add"></span>{' '}
+              <ToolTip toolInfo="Add Channel" />
+            </button>
+          </div>
 
-            <ChannelsList className="channelList">
-              {props.rooms
-                .sort((a, b) => {
-                  if (a.name >= b.name) return 1;
-                  else return -1;
-                })
-                .map((item, i, arr) => {
-                  return (
-                    <Channel key={item.id} onClick={channelClickHandler}>
-                      <span className="icon" data-icon={'\uE125'}></span>
-                      <p className="name">{item.name}</p>
-                    </Channel>
-                  );
-                })}
+          <ChannelsList className="channelList">
+            {props.rooms
+              .sort((a, b) => {
+                if (a.name >= b.name) return 1;
+                else return -1;
+              })
+              .map((item, i, arr) => {
+                return (
+                  <Channel
+                    key={item.id}
+                    onClick={(e) => {
+                      goToChannel(item.id);
+                      channelClickHandler(e);
+                    }}
+                  >
+                    <span className="icon" data-icon={'\uE125'}></span>
+                    <p className="name">{item.name}</p>
+                  </Channel>
+                );
+              })}
 
-              <AddChannel onClick={addNewChannel}>
-                <span className="icon" data-icon={'\uE281'}></span>
-                <p className="name">Add channels</p>
-              </AddChannel>
-            </ChannelsList>
-          </ChannelsContainer>
-        </SimpleBar>
+            <AddChannel onClick={addChannelHandler}>
+              <span className="icon" data-icon={'\uE281'}></span>
+              <p className="name">Add channels</p>
+            </AddChannel>
+          </ChannelsList>
+        </ChannelsContainer>
       </ChannelsWrapper>
     </Container>
   );
@@ -134,6 +159,20 @@ const Container = styled.div({
 
 const ChannelsWrapper = styled.div`
   height: calc(100vh - 102px);
+  overflow-y: hidden;
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.45);
+    border-radius: 10px;
+  }
+
+  :hover {
+    overflow-y: auto;
+  }
 `;
 
 const MainChannels = styled.ul({

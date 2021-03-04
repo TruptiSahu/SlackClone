@@ -2,29 +2,60 @@ import React from 'react';
 import './ChatMessage.css';
 import styled from 'styled-components';
 
-function ChatMessage() {
+function ChatMessage(props) {
+  const { text, name, image, timestamp } = props;
+  const time = new Date(timestamp.toDate());
+
+  const nth = function (d) {
+    if (d > 3 && d < 21) return 'th';
+    switch (d % 10) {
+      case 1:
+        return 'st';
+      case 2:
+        return 'nd';
+      case 3:
+        return 'rd';
+      default:
+        return 'th';
+    }
+  };
+  const date = time.getDate();
+  const month = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ][time.getMonth()];
+
+  let year = time.getFullYear();
+
+  const myTime = new Intl.DateTimeFormat('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  }).format(time);
+
+  const formattedTime = `${month} ${date}${nth(date)} ${year} at ${myTime}`;
+
   return (
-    <Container>
+    <Container className="userMessage">
       <div className="userAvatar">
-        <img
-          src="https://randomuser.me/api/portraits/women/11.jpg"
-          alt="userImage"
-        />
+        <img src={image} alt="userImage" />
       </div>
       <div className="messageContent">
         <div className="user__name-container">
-          <p className="user__name">Trupti Ranjan Sahu</p>
-          <span className="user__messageTime">Feb 24th at 1:55:47 PM</span>
+          <p className="user__name">{name}</p>
+          <span className="user__messageTime">{formattedTime}</span>
         </div>
-        <div className="user__message">
-          explicabo voluptate vel, sit aliquid iure quaerat distinctio
-          voluptatibus molestiae, laudantium nobis libero quidem est. dolollitia
-          error dolore ipsum harum neque debitis, nostrum quod amet minima
-          aliquid deserunt nisi! Nemo in aliquid reiciendis. Libero illum a
-          error deserunt ea, sed id quod repellendus iure labore ex eum maxime
-          doloribus porro eaque. Autem, esse veritatis fugit reprehenderit ad
-          deleniti debitis unde
-        </div>
+        <div className="user__message">{text}</div>
       </div>
     </Container>
   );
@@ -34,7 +65,7 @@ export default ChatMessage;
 const Container = styled.div`
   padding: 8px 20px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
 
   :hover {

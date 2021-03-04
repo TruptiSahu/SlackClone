@@ -1,0 +1,145 @@
+.modal-background {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 4;
+}
+
+.modal-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: -1;
+}
+
+.modal {
+  width: 800px;
+  height: 250px;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.modal-top {
+  width: 100%;
+  padding: 13px 20px;
+  position: relative;
+  border-bottom: 1px solid rgba(29, 28, 29, 0.13);
+}
+
+.modal-bottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 13px 20px;
+}
+
+.modal__title {
+  line-height: 36px;
+  font-size: 22px;
+  font-weight: 900;
+  color: rgb(29, 28, 29);
+  font-family: 'Slack-Lato', sans-serif;
+}
+
+.modal__close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  outline: none;
+  border: none;
+  width: 36px;
+  height: 36px;
+  background: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.modal__close:hover {
+  background: rgba(29, 28, 29, 0.04);
+}
+
+.modal__close .icon-close::before {
+  content: '\E278';
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  font-family: 'Slack v2';
+  color: rgba(29, 28, 29, 1);
+}
+
+.modal__desc {
+  font-family: 'Slack-Lato', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: rgb(29, 28, 29);
+  text-align: left;
+}
+
+.modal-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-top: 10px;
+}
+
+.modal-form__btn {
+  outline: none;
+  border: none;
+  margin-top: 22px;
+  background-color: #007a5a;
+  color: white;
+  border: none;
+  height: 40px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 15px;
+  padding: 10px 20px;
+  font-family: 'Slack-Lato', sans-serif;
+  box-shadow: 0px 3px 7px rgb(0 122 90 / 65%);
+  transition: all 0.3s;
+  outline: none;
+}
+
+.modal-form__btn:hover {
+  transform: translateY(2px);
+  box-shadow: 0px 3px 7px rgba(62, 14, 63, 0.3);
+}
+
+.modal-form__btn:active {
+  box-shadow: inset 0px 1px 9px rgb(0 0 0 / 30%);
+}
+
+.modal-form__input {
+  width: 100%;
+  height: 42px;
+  border: 1px solid rgba(29, 28, 29, 0.699);
+  border-radius: 4px;
+  flex-grow: 1;
+  outline: none;
+  font-family: 'Slack-Lato', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: rgb(29, 28, 29);
+  padding: 0px 10px;
+}
+
+.modal-form__input::placeholder {
+  color: rgba(0, 0, 0, 0.411);
+}
+
+.display-none {
+  display: none;
+}

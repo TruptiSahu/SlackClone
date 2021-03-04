@@ -1,13 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import './ChatInput.css';
 import ReactDOM from 'react-dom';
 
-function ChatInput() {
+function ChatInput({ sendMessage, channelName, isDarkMode }) {
   const formatBTN = document.querySelector('.form__btn-format');
   const messageInput = document.getElementById('input-message');
   const submitBTN = document.querySelector('.form__btn-send');
   const inputWrapper = document.querySelector('.inputWrapper');
+
+  const [input, setInput] = useState('');
+
+  const send = (e) => {
+    e.preventDefault();
+    if (!input) return;
+    sendMessage(input);
+    messageInput.value = '';
+    setInput('');
+  };
 
   const activeSubmitBTN = (e) => {
     e.preventDefault();
@@ -35,21 +45,26 @@ function ChatInput() {
   };
 
   return (
-    <Container>
+    <Container className={isDarkMode && 'dark-modeInput'}>
       <div className="inputWrapper active">
         <div className="inputContainer">
-          <input
-            id="input-message"
-            type="text"
-            placeholder="Message #profit-with-javscript"
-            spellCheck="false"
-            autocomplete="off"
-            onChange={activeSubmitBTN}
-          />
+          <form onSubmit={send} style={{ flexGrow: '1' }}>
+            <input
+              id="input-message"
+              type="text"
+              placeholder={`Message #${channelName}`}
+              spellCheck="false"
+              autoComplete="off"
+              onChange={(e) => {
+                activeSubmitBTN(e);
+                setInput(e.target.value);
+              }}
+            />
+          </form>
         </div>
         <div className="buttonsContainer">
           <button
-            className="form__btn form__btn-format"
+            className="form__btn form__btn-format btn-active"
             onClick={messageFormatHandler}
           >
             <span className="icon icon-format"></span>
@@ -63,7 +78,11 @@ function ChatInput() {
           <button className="form__btn form__btn-attach">
             <span className="icon icon-attach"></span>
           </button>
-          <button className="form__btn form__btn-send btn-disabled">
+          <button
+            className="form__btn form__btn-send btn-disabled"
+            type="submit"
+            onClick={send}
+          >
             <span className="icon icon-send"></span>
           </button>
         </div>

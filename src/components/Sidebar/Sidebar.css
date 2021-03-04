@@ -24,8 +24,17 @@
   padding: 0 54px 0 16px;
 }
 
+.dark-mode .workspaceContainer {
+  background: #19171d;
+  border-color: rgb(43, 42, 47);
+}
+
 .workspaceContainer:hover {
   background-color: #350d36;
+}
+
+.dark-mode .workspaceContainer:hover {
+  background-color: #27242c;
 }
 
 .workspaceContainer__btn-container {
@@ -50,6 +59,10 @@
   white-space: nowrap;
 }
 
+.dark-mode .workspace__btn {
+  color: #d1d2d3;
+}
+
 .workspace__btn--new-message {
   height: 36px;
   width: 36px;
@@ -68,6 +81,11 @@
   border-radius: 50%;
   color: #3f0e40;
   fill: #3f0e40;
+}
+
+.workspace__btn--new-message {
+  color: #19171d;
+  fill: #19171d;
 }
 
 .newChannelContainer {
@@ -171,4 +189,38 @@
 
 .clickedChannel > * {
   color: #fff !important;
+}
+
+.workspace__btn--new-message .tooltip {
+  width: 120px;
+  transform: translate(-25%, 35%);
+}
+
+.channel__btn--addChannel {
+  position: relative;
+}
+
+.channel__btn--addChannel .tooltip {
+  transform: translate(-80%, 35%);
+  width: 110px;
+}
+
+.channel__btn--addChannel .tooltip::before {
+  right: 10%;
+  left: auto;
+}
+
+.workspace__btn--new-message:hover .tooltip,
+.channel__btn--addChannel:hover .tooltip {
+  opacity: 1;
+}
+
+.dark-modeContainer {
+  background: #19171d !important;
+}
+
+.dark-mode .channelList li:hover,
+.dark-mode .mainChannels li:hover {
+  background: #27242c;
+  background: #27242c;
 }

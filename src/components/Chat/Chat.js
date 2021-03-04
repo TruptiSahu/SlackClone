@@ -1,18 +1,61 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import './Chat.css';
 import ChatInput from '../ChatInput/ChatInput';
 import ChatMessage from '../ChatMessage/ChatMessage';
 import db from '../../firebase';
+import { useParams } from 'react-router-dom';
+import firebase from 'firebase';
+import ToolTip from '../ToolTip/ToolTip';
 
 function Chat(props) {
+  let { channelId } = useParams();
+  const [channel, setChannel] = useState();
+  const [messages, setMessages] = useState([]);
+
+  const getMessages = () => {
+    db.collection('rooms')
+      .doc(channelId)
+      .collection('messages')
+      .orderBy('timestamp', 'asc')
+      .onSnapshot((snapshot) => {
+        let messages = snapshot.docs.map((doc) => doc.data());
+        setMessages(messages);
+      });
+  };
+
+  const getChannel = () => {
+    db.collection('rooms')
+      .doc(channelId)
+      .onSnapshot((snapshot) => {
+        setChannel(snapshot.data());
+      });
+  };
+
+  const sendMessage = (text) => {
+    if (channelId) {
+      let payload = {
+        text: text,
+        timestamp: firebase.firestore.Timestamp.now(),
+        user: props.user.name,
+        userImage: props.user.photo,
+      };
+      db.collection('rooms').doc(channelId).collection('messages').add(payload);
+    }
+  };
+
+  useEffect(() => {
+    getChannel();
+    getMessages();
+  }, [channelId]);
+
   return (
     <Container>
-      <Header>
-        <Channel>
+      <Header className={props.isDarkMode && 'dark-chatHeader'}>
+        <Channel className={props.isDarkMode && 'dark-chatChannel'}>
           <ChannelName>
             <span className="icon icon-hash"></span>
-            <p>profit-with-javascript</p>
+            <p>{channel && channel.name}</p>
             <button className="btn-channelStar">
               <span className="icon icon-star"></span>
             </button>
@@ -36,17 +79,34 @@ function Chat(props) {
             </div>
           </div>
           <button className="btn btn-addMember">
-            <span className="icon icon-user"></span>
+            <span className="icon icon-user"></span>{' '}
+            <ToolTip toolInfo={channel && `Add people to #${channel.name}`} />
           </button>
           <button className="btn btn-channelDetail">
-            <span className="icon icon-info"></span>
+            <span className="icon icon-info"></span>{' '}
+            <ToolTip toolInfo="Show channel details" />
           </button>
         </ChannelDetails>
       </Header>
-      <MessageContainer>
-        <ChatMessage />
+      <MessageContainer
+        className={props.isDarkMode && 'dark-chatMessageContainer'}
+      >
+        {messages.length > 0 &&
+          messages.map((data, index) => (
+            <ChatMessage
+              text={data.text}
+              name={data.user}
+              image={data.userImage}
+              timestamp={data.timestamp}
+              key={`${data.id}-${index}`}
+            />
+          ))}
       </MessageContainer>
-      <ChatInput />
+      <ChatInput
+        sendMessage={sendMessage}
+        channelName={channel && channel.name}
+        isDarkMode={props.isDarkMode}
+      />
     </Container>
   );
 }
